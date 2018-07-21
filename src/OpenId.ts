@@ -1,7 +1,6 @@
 import * as jwt from "jsonwebtoken"
 import * as moment from "moment"
 import OpenIdError from "./OpenIdError";
-import { PROVIDERS } from "./constants/Providers";
 import ProviderHttpClient from "./ProviderHttpClient";
 import { IUserManager, IConfig } from "./types";
 import SessionManager from "./SessionManager";
@@ -13,6 +12,8 @@ class OpenId<U, T> {
   private jwtSecret: string
   private expireMinutes: number
   private providerHttpClient: ProviderHttpClient<T>
+  private LOCAL_PROVIDER_NAME: string
+  private OPENID_PROVIDER_NAME: string
 
   constructor(config: IConfig<U, T>) {
     this.userManager = config.userManager
@@ -20,6 +21,8 @@ class OpenId<U, T> {
     this.sessionManager = new SessionManager(config.sessionStorage)
     this.jwtSecret = config.jwtSecret
     this.providerHttpClient = new ProviderHttpClient<T>(config.providerUserinfoUri)
+    this.LOCAL_PROVIDER_NAME = config.LOCAL_PROVIDER_NAME
+    this.OPENID_PROVIDER_NAME = config.OPENID_PROVIDER_NAME
   }
 
   public async getUserFromHeader(header: string): Promise<U> {
@@ -27,15 +30,15 @@ class OpenId<U, T> {
       const provider: string = TokenUtils.getProvider(header)
       const token: string = TokenUtils.getToken(header)
 
-      if (provider === PROVIDERS.LOCAL) {
+      if (provider === this.LOCAL_PROVIDER_NAME) {
         return this.getUserFromJWT(token)
       }
-      if (provider === PROVIDERS.PIK) {
+      if (provider === this.OPENID_PROVIDER_NAME) {
         return this.getUserFromOpenId(token)
       }
 
       throw new Error(
-        `Unknown provider in your auth header: ${provider}. Only ${Object.keys(PROVIDERS).join(', ')} is allowed`
+        `Unknown provider in your auth header: ${provider}. Only ${[this.LOCAL_PROVIDER_NAME, this.OPENID_PROVIDER_NAME]} is allowed`
       )
     } catch (e) {
       throw new OpenIdError(e.message)
@@ -43,7 +46,7 @@ class OpenId<U, T> {
   }
 
   private async getUserFromOpenId(token: string): Promise<U> {
-    const session = await this.sessionManager.getSession(PROVIDERS.PIK, token)
+    const session = await this.sessionManager.getSession(this.OPENID_PROVIDER_NAME, token)
 
     let user: U
     if (!session || this.sessionManager.isSessionExpired(session)) {
@@ -61,7 +64,7 @@ class OpenId<U, T> {
       }
 
       await this.sessionManager.createSession(
-        PROVIDERS.PIK,
+        this.OPENID_PROVIDER_NAME,
         token,
         moment().add(this.expireMinutes, 'm').toISOString(),
         openIdSub

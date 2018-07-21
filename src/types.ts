@@ -5,6 +5,8 @@ export interface IConfig<U, T> {
   jwtSecret: string
   providerUserinfoUri: string
   expireMinutes: number
+  LOCAL_PROVIDER_NAME: string
+  OPENID_PROVIDER_NAME: string
 }
 
 export interface Session {
