@@ -25,7 +25,7 @@ export interface ISessionStorage {
 }
 
 export interface IUserManager<U, T> {
-  create(data: T): U
+  create(data: T): Promise<U>
   findByOpenIdSub(openIdSub: string): Promise<U>
-  findFromJWT(parsedJWT: any): U
+  findFromJWT(parsedJWT: any): Promise<U>
 }
