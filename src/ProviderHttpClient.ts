@@ -1,6 +1,6 @@
-import axios, { AxiosInstance, AxiosResponse } from "axios";
+import axios, { AxiosResponse } from "axios";
 
-class OpenIdAPI<T> {
+class HttpClient<T> {
   private providerUserinfoUri: string
 
   constructor(providerUserinfoUri: string) {
@@ -31,4 +31,4 @@ class OpenIdAPI<T> {
   }
 }
 
-export default OpenIdAPI
+export default HttpClient
