@@ -2,7 +2,7 @@ import * as jwt from "jsonwebtoken"
 import * as moment from "moment"
 import OpenIdError from "./OpenIdError";
 import ProviderHttpClient from "./ProviderHttpClient";
-import { IUserManager, IConfig } from "./types";
+import { IUserManager, IConfig, Session } from "./types";
 import SessionManager from "./SessionManager";
 import TokenUtils from "./TokenUtils";
 
@@ -25,7 +25,7 @@ class OpenId<U, T> {
     this.OPENID_PROVIDER_NAME = config.OPENID_PROVIDER_NAME
   }
 
-  public async getUserFromHeader(header: string): Promise<U> {
+  public async getUserFromHeader(header: string): Promise<U | null> {
     try {
       const provider: string = TokenUtils.getProvider(header)
       const token: string = TokenUtils.getToken(header)
@@ -45,10 +45,10 @@ class OpenId<U, T> {
     }
   }
 
-  private async getUserFromOpenId(token: string): Promise<U> {
-    const session = await this.sessionManager.getSession(this.OPENID_PROVIDER_NAME, token)
+  private async getUserFromOpenId(token: string): Promise<U | null> {
+    const session: Session | null = await this.sessionManager.getSession(this.OPENID_PROVIDER_NAME, token)
+    let user: U | null = null
 
-    let user: U
     if (!session || this.sessionManager.isSessionExpired(session)) {
       if (session) {
         await this.sessionManager.destroySession(session)
@@ -76,7 +76,7 @@ class OpenId<U, T> {
     return user
   }
 
-  private getUserFromJWT(token: string): Promise<U> {
+  private getUserFromJWT(token: string): Promise<U | null> {
     return new Promise((resolve, reject) =>
       jwt.verify(token, this.jwtSecret, (err: Error, decoded: any) => {
         if (err) {
