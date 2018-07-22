@@ -6,8 +6,8 @@
         "removeComments": true,
         "preserveConstEnums": true,
         "declaration": true,
-        "declarationDir": "./types",
-        "outDir": "./out",
+        "declarationDir": "./",
+        "outDir": "./",
         "target": "es6",
         "sourceMap": false
     },
