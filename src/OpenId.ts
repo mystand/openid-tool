@@ -49,7 +49,7 @@ class OpenId<U, T> {
     const session: Session | null = await this.sessionManager.getSession(this.OPENID_PROVIDER_NAME, token)
     let user: U | null = null
 
-    if (!session || this.sessionManager.isSessionExpired(session)) {
+    if (!session || await this.sessionManager.isSessionExpired(session)) {
       if (session) {
         await this.sessionManager.destroySession(session)
       }
