@@ -53,9 +53,9 @@ class OpenId<U, T> {
       if (session) {
         await this.sessionManager.destroySession(session)
       }
-      const userInfo = await this.providerHttpClient.getUser(token)
+      const { data: userInfo, status } = await this.providerHttpClient.getProviderResponse(token)
       const openIdSub: string = (userInfo as any).sub
-      if (!userInfo || await this.providerHttpClient.getStatus(token) !== 200) {
+      if (!userInfo || status !== 200) {
         throw new OpenIdError('OpenId server responsed with non 200 code')
       }
       user = await this.userManager.findByOpenIdSub(openIdSub)
