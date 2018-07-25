@@ -7,7 +7,7 @@ export default class SessionManager {
     this.sessionStorage = sessionStorage
   }
 
-  async getSession(provider: string, token: string): Promise<Session> {
+  async getSession(provider: string, token: string): Promise<Session | null> {
     return this.sessionStorage.get(provider, token)
   }
 
