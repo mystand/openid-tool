@@ -12,18 +12,18 @@
   "author": "MyStand",
   "license": "ISC",
   "dependencies": {
-    "axios": "~0.18.0",
-    "jsonwebtoken": "~8.3.0",
-    "moment": "~2.22.2",
-    "typescript": "~2.9.2"
+    "axios": "0.18.0",
+    "jsonwebtoken": "8.3.0",
+    "moment": "2.22.2",
+    "typescript": "2.9.2"
   },
   "devDependencies": {
-    "@types/axios": "~0.14.0",
-    "@types/jest": "~23.3.1",
-    "@types/jsonwebtoken": "~7.2.8",
-    "@types/moment": "~2.13.0",
-    "axios-mock-adapter": "~1.15.0",
-    "jest": "~23.5.0",
-    "ts-jest": "~23.1.4"
+    "@types/axios": "0.14.0",
+    "@types/jest": "23.3.1",
+    "@types/jsonwebtoken": "7.2.8",
+    "@types/moment": "2.13.0",
+    "axios-mock-adapter": "1.15.0",
+    "jest": "23.5.0",
+    "ts-jest": "23.1.4"
   }
 }
