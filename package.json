@@ -1,12 +1,10 @@
 {
   "name": "openid-tool",
-  "version": "0.0.1",
+  "version": "0.0.5",
   "description": "",
   "main": "index.js",
-  "types": "index.d.ts",
   "scripts": {
-    "test": "jest",
-    "build": "tsc"
+    "test": "jest"
   },
   "author": "MyStand",
   "license": "ISC",
