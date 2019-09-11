@@ -1,6 +1,6 @@
 {
   "name": "openid-tool",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "",
   "main": "index.js",
   "types": "index.d.ts",
@@ -18,10 +18,8 @@
     "typescript": "2.9.2"
   },
   "devDependencies": {
-    "@types/axios": "0.14.0",
     "@types/jest": "23.3.14",
     "@types/jsonwebtoken": "7.2.8",
-    "@types/moment": "2.13.0",
     "axios-mock-adapter": "1.15.0",
     "jest": "~24.9.0",
     "ts-jest": "~24.0.2"
